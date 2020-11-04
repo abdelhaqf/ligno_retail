@@ -12,8 +12,13 @@
               stack-label
               class="text-capitalize"
               v-model="transaction.distributor"
+              use-input
+              hide-selected
+              fill-input
+              input-debounce="0"
+              @filter="filterFn"
               label="DISTRIBUTOR"
-              :options="option_distributor"
+              :options="option_distributor_filtered"
               @input="resetData"
             />
           </div>
@@ -150,7 +155,7 @@
           </q-input>
         </q-card-section>
         <q-card-actions>
-          <q-btn stretch class="full-width" label="SIMPAN TRANSAKSI" color="primary" @click="clickTransaction"></q-btn>
+          <q-btn stretch flat class="full-width" label="SIMPAN TRANSAKSI" color="primary" @click="clickTransaction"></q-btn>
         </q-card-actions>
         <q-inner-loading :showing="transaction.distributor == null">
           <q-spinner-puff size="50px" color="primary" />
@@ -165,6 +170,7 @@ export default {
   data() {
     return {
       option_distributor: [],
+      option_distributor_filtered: [],
       tab_product_type: "dish_soap",
       list_product: [
         {
@@ -296,6 +302,12 @@ export default {
         this.data = result.data;
         this.transaction.distributor = null;
         this.resetData();
+      });
+    },
+    filterFn(val, update, abort) {
+      update(() => {
+        const needle = val.toLowerCase();
+        this.option_distributor_filtered = this.option_distributor.filter((v) => v.name.toLowerCase().indexOf(needle) > -1);
       });
     },
   },

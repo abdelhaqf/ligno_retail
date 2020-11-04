@@ -8,7 +8,7 @@
         <!-- links -->
         <q-btn stretch flat label="INPUT" to="/" />
         <q-btn stretch flat label="PENGAMBILAN" to="/ambil" />
-        <q-btn stretch flat label="LAPORAN" />
+        <q-btn stretch flat label="LAPORAN" to="/laporan" />
       </q-toolbar>
       <router-view />
     </q-page-container>

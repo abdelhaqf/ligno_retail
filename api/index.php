@@ -54,12 +54,29 @@ Flight::route('GET /distributor', function () {
 
   Flight::json($items);
 });
-Flight::route('GET /transaction/pengambilan/@month/@year', function ($month,$year) {
+Flight::route('GET /transaction/pengambilan/@month/@year', function ($month, $year) {
   $link = getLink();
 
   $q = "SELECT *,transaction.id as id,distributor.name as 'distributor_name' FROM transaction
   JOIN distributor on transaction.distributor_id=distributor.id
   WHERE YEAR(Date) = $year AND MONTH(Date) = $month";
+  $res = mysqli_query($link, $q) or die(mysqli_error($link));
+
+  $items = array();
+  while ($row = mysqli_fetch_assoc($res)) {
+    $items[] = $row;
+  }
+
+  Flight::json($items);
+});
+Flight::route('GET /transaction/laporan/@month/@year', function ($month, $year) {
+  $link = getLink();
+
+  $q = "SELECT *,`transaction`.id as id,distributor.name as 'distributor_name', sum(total_price) as total_price_sum,count(distributor_id) as transaction_count FROM transaction
+  JOIN distributor on transaction.distributor_id=distributor.id
+  WHERE YEAR(Date) = $year AND MONTH(Date) = $month
+  GROUP BY distributor_id
+  order by total_price_sum DESC";
   $res = mysqli_query($link, $q) or die(mysqli_error($link));
 
   $items = array();

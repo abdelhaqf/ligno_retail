@@ -14,6 +14,11 @@ const routes = [
     name: 'Ambil',
     component: () => import('../views/PageAmbil')
   },
+  {
+    path: '/laporan',
+    name: 'Laporan',
+    component: () => import('../views/PageLaporan')
+  },
 ]
 
 const router = new VueRouter({
