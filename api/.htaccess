@@ -1,0 +1,11 @@
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Headers "Origin, Content-Type, X-Auth-Token, X-Custom-Header, Authorization"
+Header always set Access-Control-Allow-Methods "GET, POST, PATCH, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Expose-Headers "Content-Security-Policy, Location"
+Header always set Access-Control-Max-Age "600"
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
